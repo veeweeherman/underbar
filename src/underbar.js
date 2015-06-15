@@ -98,9 +98,17 @@
   };
 
   // Return all elements of an array that don't pass a truth test.
+  //MY PSEUDO CODE--DO THIS MORE FKN OFTEN EVEN IF U THINK U KNOW THIS SHIT!
+  //the opposite of filter! Make an array of FAILURES buahaha
+  //use filter, says the instructions.... return the filter to collect passed items and get it out into the next scope (bc filter is a nested function)
+  //return the opposite-operator (!) on the result
+
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    return _.filter(collection, function(item) {
+      return !test(item)
+    });
   };
 
   // Produce a duplicate-free version of the array.
