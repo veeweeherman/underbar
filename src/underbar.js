@@ -197,7 +197,23 @@ _.uniq = function(array, isSorted, iterator) {
   //     return total + number * number;
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
+
+  //MY PSEUDO CODE--DO THIS MORE FKN OFTEN EVEN IF U THINK U KNOW THIS SHIT!
+  //takes 3 arguments: collection, callback, starting value/initial/accumulator (optional)
+  //callback function takes 4 arguments: previous value/initial value, current value, current index, and the array
+  //if no accumulator, the first element of array/object (array[0]) is the accumulator: accumulator = array[0] or object[key], then iterator is called on second and onward items
+  //if there is an accumulator, it is the start value and every iterated item gets added to it via each
+  //retry
+  //use if to check if accumulator has been passed; if accumulator has nt been passed, accumulator needs to be assigned a value, specifically the first element of the array
+  //use each to iterate through the collection and it will re-assign the accumulator value after each iteration
   _.reduce = function(collection, iterator, accumulator) {
+    if (accumulator === undefined) { //if no accumulator arg passsed
+        accumulator = collection.shift(); //assign the first elem of collection as accumulator
+      } 
+      _.each(collection, function(item) { //so in this scenario there's always an accumulator
+          accumulator = iterator(accumulator, item);
+      })
+    return accumulator;
   };
 
   // Determine if the array or object contains a given value (using `===`).
