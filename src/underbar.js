@@ -144,10 +144,19 @@ _.uniq = function(array, isSorted, iterator) {
 
 
   // Return the results of applying an iterator to each element.
+  //MY PSEUDO CODE--DO THIS MORE FKN OFTEN EVEN IF U THINK U KNOW THIS SHIT!
+  //create an empty for the iterated items
+  //use each to invoke the iterator on the items in the collection and push the iterated items into the empty array
+  //outside the each function (meaning, after) return the no-longer empty array of iterated items
   _.map = function(collection, iterator) {
     // map() is a useful primitive iteration function that works a lot
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
+        var mappedItems = [];
+    _.each(collection, function(item) {
+      mappedItems.push(iterator(item));
+    })
+    return mappedItems;
   };
 
   /*
