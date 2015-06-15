@@ -112,8 +112,35 @@
   };
 
   // Produce a duplicate-free version of the array.
-  _.uniq = function(array) {
-  };
+//MY PSEUDO CODE--DO THIS MORE FKN OFTEN EVEN IF U THINK U KNOW THIS SHIT!
+  
+  //this has lots of notes and with the example array and callback, ive outlined each stage what each array/object will be; sorry it's flooded with all my pseudocode
+
+  //return the values of the keys
+  //return unique values frmo unsorted array
+  //handle iterators that work with a sorted array
+  //return a new array, not modify the old one
+
+ 
+  //var numbers = [1, 2, 1, 3, 1, 4] // var add1 = function(num) {return num+1}
+  //_.uniq(numbers) --> [1, 2, 3, 4]
+_.uniq = function(array, isSorted, iterator) {
+  var uniqueObj = {}; //create empty object
+  if (!iterator) { //iterator is empty variable when no arg is passed
+    iterator = _.identity //giving default function value for iterator
+  }
+  _.each(array, function(v, i, l) {
+    uniqueObj[iterator(v)] = v //is the same as uniqueObj[v]=v bc its like there's always gonna be an iterator function, no matter whether iterator was passed in or not
+    //invokes callback to each value in the array and make it the key name to the (no longer) empty object) and its value is the value itself
+    //its good to use objects bc with every repeated value in the array, its corresponding key-value pair will be overwritten w the exact same value when it iterates over a duplicate
+  }) //-->{2:1, 3:2, 2:1, 4:3, 2:1, 5:4}-->{2:1, 3:2, 4:3, 5:4}
+  var uniqueArr = Object.keys(uniqueObj) //make a new array of all the uniqueObj's key names --> [2, 3, 4, 5]
+  uniqueArr.sort(); //sort the array -->[2, 3, 4, 5]
+  return _.map(uniqueArr, function(v,i,l) { //use map for this array to pull out 
+    return uniqueObj[v] //--> [uniqueObj[2], uniqueObj[3], uniqueObj[4], uniqueObj[5]]===[1, 2, 3, 4]
+  })
+}; 
+
 
 
   // Return the results of applying an iterator to each element.
