@@ -64,6 +64,9 @@
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
+  //MY PSEUDO CODE--DO THIS MORE FKN OFTEN EVEN IF U THINK U KNOW THIS SHIT!
+  //use each to iterate through the array, use if statement to check if current item matches the target, if so return the index #
+  //if no match, return -1
   _.indexOf = function(array, target){
     // TIP: Here's an example of a function that needs to iterate, which we've
     // implemented for you. Instead of using a standard `for` loop, though,
@@ -80,7 +83,18 @@
   };
 
   // Return all elements of an array that pass a truth test.
+//MY PSEUDO CODE--DO THIS MORE FKN OFTEN EVEN IF U THINK U KNOW THIS SHIT!
+  //create an empty array to push the pass-test items into
+  //use each to iterate each item in collection, if the item passes then push into the empty array
+  //make sure to return the array
   _.filter = function(collection, test) {
+    var passedElements = [];
+    _.each(collection, function(item) {
+      if (test(item)) {
+        passedElements.push(item)
+      }
+    })
+    return passedElements;
   };
 
   // Return all elements of an array that don't pass a truth test.
