@@ -319,15 +319,41 @@ _.uniq = function(array, isSorted, iterator) {
 //MY PSEUDO
 //loop through from/source's properties and add them onto the to/destination obj
 //return destination obj
+//restriction 5-6 
+  //"should extend from multiple source objects"
+  //in the case of a conflict, it should use the last property's values when extending from multiple source objects
+  //...something to do w the arguments object? loop through this IF there is more than one from-argument; arguments is an array-like object
+  //loop through arguments-array; then loop through each objects' keys and values
+  //also, there is no TO argument in this case?
   _.extend = function(to, from) {
-    
-    if (!from) {
-      return to
-    }
+
+    // if (to) {
+    //   _.each(from, function(value, key) {
+    //     to[key] = value;
+    //   })
+    //   return to;
+    // }
+    var args = Array.prototype.slice.call(arguments); //turns the arguments-'array' into a real array
+    to = args.shift()  // assigns first item/arg as the to variable (destination), now args is changed (missing first element), now from = args from index 1 to the end
     _.each(from, function(value, key) {
-      to[key] = value;
+        to[key] = value;
     })
-    return to;
+      return to;
+
+    // } else if (!to) {
+    // // if (!to) {
+    //   var to = {};
+    //   _.each(arguments, function(value/*each obj*/, index/*obj index*/) { --> //arguments=[{}, ... {}, {}]
+    //     _.each(value, function(val/*that obj's val*/, key/*that obj's key name*/){
+    //       to[key] = val;
+    //     }) 
+        
+    //       to[index] = value
+        
+    //   })    
+    // }
+    //   return to;
+    
   };
 
   // Like extend, but doesn't ever overwrite a key that already
