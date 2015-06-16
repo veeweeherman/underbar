@@ -147,7 +147,7 @@
         var extended = _.extend({ x: 'x' }, { a: 'a', x: 2 }, { a: 1 });
 
         expect(extended).to.eql({ x: 2, a: 1 });
-      });
+      }); //overwrite
     });
 
     describe('defaults', function() {
