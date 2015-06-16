@@ -231,13 +231,32 @@ _.uniq = function(array, isSorted, iterator) {
 
 
   // Determine whether all of the elements match a truth test.
+
+  //MY PSEUDO CODE--DO THIS MORE FKN OFTEN EVEN IF U THINK U KNOW THIS SHIT!
+  //_.every returns true if all values in list that pass predicate test; so the callback/iterator is the callback
+
+  //reduce will "sum" all the boolean values down to one value of true or false, only IF ALL VALUES IN THE ARRAY MATCH TRUE/FALSE; like the BOUNCER EXAMPLE
+      /* bouncer example:
+      var over21 = _.reduce(bouncersNightmare, function(accumulated, current) {
+        if (accumulated && current >= 21){
+          return true
+        } else {
+          return false
+        }
+      }, true)
+      */
+  //sample: var nums=[1,2,3,4,5]
+  //var isEven = function(num) {return num % 2 === 0}
+
+  //make epmpty newArray to hold values of true's and false's as each item in collection is invoked by callback
+  //use reduce on newArray to check if all values are true or false
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
     var newArray = [];
     _.each(collection, function(item) {
       newArray.push(iterator(item)) //makes array or true's and false's
     })
-    //return _.map(collection, iterator)
+    //var newArray=return _.map(collection, function(item){})
     return _.reduce(newArray, function(item) {
       if (accumulator && item) {
         return true
