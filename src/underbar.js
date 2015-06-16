@@ -316,7 +316,15 @@ _.uniq = function(array, isSorted, iterator) {
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
+//MY PSEUDO
+//loop through from/source's properties and add them onto the to/destination obj
+//return destination obj
+  _.extend = function(to, from) {
+    var to = {};
+    _.each(from, function(value, key, list) {
+      to[key] = value;
+    })
+    return to;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
