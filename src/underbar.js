@@ -255,31 +255,33 @@ _.uniq = function(array, isSorted, iterator) {
     if (!iterator) {
       iterator = _.identity
     } //assigns a function to iterator function, so there's always technically a callback, even if the user doesn't pass in an iterator function argument
-   
-    //use map with new Boolean (); then reduce this new array to a signle true or false? lets try
+
+    return _.reduce(collection, function(list,item) {
+        if( !iterator(item) ) { //if current item is false, it makes the ENTIRE result false
+          return false; 
+        } else if (!list) { //the opposite of: if after the entire loop, all items are true
+          return false;
+        } else if( iterator(item) ) { //if item === true
+           return true;
+        }
+    }, true)
+
+    // var arrOfBools = _.map(collection, function(item) { 
+    //   return Boolean(iterator(item))
+    // }) //now we have an array of booleans only
+
+    //   return _.reduce(arrOfBools, function(list,item) {
+    //     if(!item) { //if current item is false, it makes the ENTIRE result false
+    //       return false; 
+    //     } else if (!list) { //the opposite of: if after the entire loop, all items are true
+    //       return false;
+    //     } else if(item) { //if item === true
+    //        return true;
+    //     }
+    //   }, true) //start value
   
 
-    var arrOfBools = _.map(collection, function(item) { 
-      return Boolean(iterator(item))
-    }) //now we have an array of booleans only
 
-    for (var i = 0; i<arrOfBools.length; i++) {
-      var initialState = true;
-      if (initialState && arrOfBools[i]) { //if both equal true
-        initialState = true
-      } else {
-       initialState = false
-        return initialState
-      }
-    }
-
-    // return _.reduce(collection, function(item) { //lets take a break from reduce and work it out the long way
-    //   if (accumulator && iterator(item) ) {
-    //     return true
-    //   } 
-    //     return false
-      
-    // }, true)
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
