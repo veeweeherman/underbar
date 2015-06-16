@@ -321,23 +321,34 @@ _.uniq = function(array, isSorted, iterator) {
 //return destination obj
 //restriction 5-6 
   //"should extend from multiple source objects"
-  //in the case of a conflict, it should use the last property's values when extending from multiple source objects
-  //...something to do w the arguments object? loop through this IF there is more than one from-argument; arguments is an array-like object
+  //"in the case of a conflict, it should use the last property's values when extending from multiple source objects"
+  //...something to do w the arguments object? loop through this IF there is more than one from-argument; arguments is an array-like object, not a real array?
   //loop through arguments-array; then loop through each objects' keys and values
   //also, there is no TO argument in this case?
-  _.extend = function(to, from) { //({to}, {from}, {from} )
+  // _.extend = function(to, from) { //({to}, {from}, {from} )
 
-    var args = Array.prototype.slice.call(arguments); //turns the arguments-'array' into a real array, an array of objects; [{x:1}, {y:2}, {z:3}]
-    from = args.slice(1, args.length); // indeces [1, 2, 3...args.length]; [{y:2}, {z:3}]
-    to = args.shift();  // assigns first item/arg as the TO variable (destination), now args is changed (missing first element), [{x:1}]
-    //nested objects inside arrays...2 nested each's? ugh
-    _.each(from, function(value/*obj*/, index/*obj index*/) {
-      _.each(value/*obj*/, function(val/*obj property value*/, key/*obj property key*/) {
-        to[key] = val;
+  //   var args = Array.prototype.slice.call(arguments); //turns the arguments-'array' into a real array, an array of objects; [{x:1}, {y:2}, {z:3}]
+  //   from = args.slice(1, args.length); // indeces [1, 2, 3...args.length]; [{y:2}, {z:3}]
+  //   to = args.shift();  // assigns first item/arg as the TO variable (destination), now args is changed (missing first element), [{x:1}]
+  //   //nested objects inside arrays...2 nested each's? ugh
+  //   _.each(from, function(value/*obj*/, index/*obj index*/) {
+  //     _.each(value/*obj*/, function(val/*obj property value*/, key/*obj property key*/) {
+  //       to[key] = val;
+  //     });
+  //   });
+  //   return to;
+
+  // };
+    //can i also do it w only one parameter and treating the arguments-fake-array as a real one?
+  _.extend = function(obj) { 
+    _.each(arguments/*as in, all the arguments passed in*/, function(argObj) {
+      _.each(argObj, function(val/*obj property value*/, key/*obj property key*/) {
+        obj[key] = val; //assignning keys and values to the object that'll be returned
       });
     });
-    return to;
-  };
+    return obj;
+  }; //are you serious, it works w such little writing?! waah
+
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
