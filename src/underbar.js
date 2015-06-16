@@ -253,7 +253,7 @@ _.uniq = function(array, isSorted, iterator) {
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
     if (!iterator) {
-      iterator = _.identity
+      iterator = _.identity;
     } //assigns a function to iterator function, so there's always technically a callback, even if the user doesn't pass in an iterator function argument
 
     return _.reduce(collection, function(list,item) {
@@ -279,7 +279,7 @@ _.uniq = function(array, isSorted, iterator) {
     //        return true;
     //     }
     //   }, true) //start value
-  
+
 
 
   };
@@ -288,6 +288,13 @@ _.uniq = function(array, isSorted, iterator) {
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if (!iterator) {
+      iterator = _.identity;
+    }
+    return !(_.every(collection, function(item){
+      return !iterator(item)
+    })); //the opposit of _.every in the partial false/partial true results, so i return the opposite of every--must use parens!
+    //but when i do that, we negate the assignment of _.dentity to the missing callback function, so I have to assign it again
   };
 
 
