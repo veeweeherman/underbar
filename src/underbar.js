@@ -320,8 +320,11 @@ _.uniq = function(array, isSorted, iterator) {
 //loop through from/source's properties and add them onto the to/destination obj
 //return destination obj
   _.extend = function(to, from) {
-    var to = {};
-    _.each(from, function(value, key, list) {
+    
+    if (!from) {
+      return to
+    }
+    _.each(from, function(value, key) {
       to[key] = value;
     })
     return to;
