@@ -252,23 +252,23 @@ _.uniq = function(array, isSorted, iterator) {
   //use reduce on newArray to check if all values are true or false
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
-    // if (collection === [] || collection {}) {
-    //   return true;
-    // }
+    if (iterator === undefined) {iterator = _.identity} //assigns a function to iterator function, so there's always technically a callback, even if the user doesn't pass in an iterator function argument
+    if (collection === [] || collection === {}) {
+      return true;
+    }
     return false;
-    var newArray = [];
-    _.each(collection, function(item) {
-      newArray.push(iterator(item)) //makes array or true's and false's
-    })
-    //var newArray=return _.map(collection, function(item){})
-    return _.reduce(newArray, function(item) {
-      if (accumulator && item) {
+    // var newArray = [];
+    // _.each(collection, function(item) {
+    //   newArray.push(iterator(item)) //makes array or true's and false's
+    // })
+    // //var newArray=return _.map(collection, function(item){})
+    return _.reduce(collection, function(item) {
+      if (accumulator && iterator(item)) {
         return true
       } else {
         return false
       }
     }, true)
-
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
