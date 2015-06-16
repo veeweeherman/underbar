@@ -252,6 +252,10 @@ _.uniq = function(array, isSorted, iterator) {
   //use reduce on newArray to check if all values are true or false
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    // if (collection === [] || collection {}) {
+    //   return true;
+    // }
+    return false;
     var newArray = [];
     _.each(collection, function(item) {
       newArray.push(iterator(item)) //makes array or true's and false's
