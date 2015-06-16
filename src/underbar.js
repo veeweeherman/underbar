@@ -7,6 +7,7 @@
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
   _.identity = function(val) {
+    return val;
   };
 
   /**
@@ -232,6 +233,19 @@ _.uniq = function(array, isSorted, iterator) {
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    var newArray = [];
+    _.each(collection, function(item) {
+      newArray.push(iterator(item)) //makes array or true's and false's
+    })
+    //return _.map(collection, iterator)
+    return _.reduce(newArray, function(item) {
+      if (accumulator && item) {
+        return true
+      } else {
+        return false
+      }
+    }, true)
+
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
