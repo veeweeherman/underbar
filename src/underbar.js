@@ -472,7 +472,7 @@ _.uniq = function(array, isSorted, iterator) {
   _.shuffle = function(array) {
     var randomNewIndex = [];
     for (var i = 0; i < array.length; i++) {
-      randomNewIndex.push( Math.floor(Math.random()*i) )
+      randomNewIndex.push( Math.floor(Math.random()*i) +1) //doesnt work, bc this doesnt guarentee no repeats
     }
     var shuffled =[];
     for (var i = 0; i < array.length; i++) {
