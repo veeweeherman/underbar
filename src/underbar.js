@@ -327,22 +327,24 @@ _.uniq = function(array, isSorted, iterator) {
   //also, there is no TO argument in this case?
   // _.extend = function(to, from) { //({to}, {from}, {from} )
 
-  //   var args = Array.prototype.slice.call(arguments); //turns the arguments-'array' into a real array, an array of objects; [{x:1}, {y:2}, {z:3}]
-  //   from = args.slice(1, args.length); // indeces [1, 2, 3...args.length]; [{y:2}, {z:3}]
-  //   to = args.shift();  // assigns first item/arg as the TO variable (destination), now args is changed (missing first element), [{x:1}]
-  //   //nested objects inside arrays...2 nested each's? ugh
-  //   _.each(from, function(value/*obj*/, index/*obj index*/) {
-  //     _.each(value/*obj*/, function(val/*obj property value*/, key/*obj property key*/) {
-  //       to[key] = val;
-  //     });
-  //   });
-  //   return to;
+    // var args = Array.prototype.slice.call(arguments); //turns the arguments-'array' into a real array, an array of objects; [{x:1}, {y:2}, {z:3}]
+    // from = args.slice(1, args.length); // indeces [1, 2, 3...args.length]; [{y:2}, {z:3}]
+    // to = args.shift();  // assigns first item/arg as the TO variable (destination), now args is changed (missing first element), [{x:1}]
+    // //nested objects inside arrays...2 nested each's? ugh
+    // _.each(from, function(value/*obj*/, index/*obj index*/) {
+    //   _.each(value/*obj*/, function(val/*obj property value*/, key/*obj property key*/) {
+    //     to[key] = val;
+    //   });
+    // });
+    // return to;
 
   // };
     //can i also do it w only one parameter and treating the arguments-fake-array as a real one?
   _.extend = function(obj) { 
-    _.each(arguments/*as in, all the arguments passed in*/, function(argObj) {
-      _.each(argObj, function(val/*obj property value*/, key/*obj property key*/) {
+    /*arguments: as in, all the arguments passed in*/
+    _.each(arguments, function(argObj) {
+      /*val: obj property value*/ /*key: obj property key*/
+      _.each(argObj, function(val, key) {
         obj[key] = val; //assignning keys and values to the object that'll be returned
       });
     });
@@ -350,12 +352,23 @@ _.uniq = function(array, isSorted, iterator) {
   }; //are you serious, it works w such little writing?! waah
 
 
-  // Like extend, but doesn't ever overwrite a key that already
-  // exists in obj
-  _.defaults = function(obj) {
-    _.each(arguments, function(argObj) {
-      _.each(argObj, function(val, key) {
-        obj[key] = val; 
+  // Like extend, but doesn't ever overwrite a key that already exists in obj
+
+  //prefers the first value found when two objects are provided with properties at the same key
+ 
+  // ^ swicth the order to be backwards?
+  //loops thru arguments-object and loops through key-values of from's objects, 
+    //assigns new key-values to TO only IF the assigning key doesnt already exist; 
+    //so IF needs to check if current key name doesnt already exist on the TO object; use Object.keys()? to loop thru an array of all the argObj's keys? use w index
+  _.defaults = function(obj) { //obj is the TO
+    _.each(arguments, function(argObj, i) { //args from index1 onward are all the FROMs
+      _.each(argObj, function(val, key) { //
+          console.log(val)
+        if (key === undefined) {//do this only if the key doesnt already exist in the obj
+          obj[key] = val; //assign a new key-value to the target object
+        } else if (obj[key] === undefined) {
+          obj[key] = val;
+        }
       });
     });
     return obj;
@@ -398,10 +411,31 @@ _.uniq = function(array, isSorted, iterator) {
   // memoize could be renamed to oncePerUniqueArgumentList; memoize does the
   // same thing as once, but based on many sets of unique arguments.
   //
+//MY PSEUDO: so it loops thru the arguments array? doing _.once on each of the elements in arguments array?
+
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
+
+//_.memoize takes in a callback function as an argument
+// the callback function takes in one primitive value as an argument
+// if the callback function has been previous called with the arguments that it is being currently passed, retrieve the results from memory and do NOT invoke the callback function
+// if the current arguments have not been previously been passed into the callback function, invoke the function with these arguments
+
+// GOAL: find out if we've done the work already and re-use that answer instead of invoking the function.
   _.memoize = function(func) {
+    if (func(arguments) !== null) {
+      //retrieve the results from memory and do NOT invoke the callback function
+      return func(arguments);
+    }
+    if (!func(arguments)) {
+      return func(arguments)
+    }
+    // _.each(arguments, _.once(value) {
+    //   func(value)
+    // })
+    //return function() {return _.once(func)}
+
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -410,7 +444,10 @@ _.uniq = function(array, isSorted, iterator) {
   // The arguments for the original function are passed after the wait
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
+
+  //set timeout function
   _.delay = function(func, wait) {
+    return setTimeout(func, wait);
   };
 
 
@@ -423,8 +460,28 @@ _.uniq = function(array, isSorted, iterator) {
   //
   // TIP: This function's test suite will ask that you not modify the original
   // input array. For a tip on how to make a copy of an array, see:
-  // http://mdn.io/Array.prototype.slice
+  // http://mdn.io/Array.prototype.slice ...map w identity as callback?
+    // arr.slice(0, arr.length) = will slice the entire array
+  // this logs 10 random integers that range from 0-9 (incl 0 but not incl 10)
+    // for (var i = 0; i < 10; i++) {console.log(Math.floor(Math.random()*i) )}
+
+  //return a shuffled copy of the list
+  //use map? with callback as reassigning index using math.random + 1 approach {math.floor(math.random()*maxval)}
+  //create an array of random numbers to be the indexes, randomNewIndex
+  //loop thru collection and assign each element a new random index# from randomNewIndex, storing this in a new array that will be returned
   _.shuffle = function(array) {
+    var randomNewIndex = [];
+    for (var i = 0; i < array.length; i++) {
+      randomNewIndex.push( Math.floor(Math.random()*i) )
+    }
+    var shuffled =[];
+    for (var i = 0; i < array.length; i++) {
+      for (var j = 0; j < randomNewIndex.length; j++) {
+      shuffled[j] = array[i]
+        
+      };
+    };
+    return shuffled;
   };
 
 

@@ -221,7 +221,7 @@
 
       it('should produce the same result as the non-memoized version', function() {
         expect(add(1, 2)).to.equal(3);
-        expect(memoAdd(1, 2)).to.equal(3);
+        expect(memoAdd(1, 2)).to.equal(3); //so memoize "memorizes" the input function and copies it?
       });
 
       it('should give different results for different arguments', function() {
@@ -233,7 +233,7 @@
         // Here, we wrap a dummy function in a spy. A spy is a wrapper function (much like _.memoize
         // or _.once) that keeps track of interesting information about the function it's spying on;
         // e.g. whether or not the function has been called.
-        var spy = sinon.spy(function() { return 'Dummy output'; });
+        var spy = sinon.spy(function() { return 'Dummy output'; }); //using _.once?
         var memoSpy = _.memoize(spy);
 
         memoSpy(10);
