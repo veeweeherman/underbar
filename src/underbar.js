@@ -363,7 +363,7 @@ _.uniq = function(array, isSorted, iterator) {
   _.defaults = function(obj) { //obj is the TO
     _.each(arguments, function(argObj, i) { //args from index1 onward are all the FROMs
       _.each(argObj, function(val, key) { //
-          console.log(val)
+          // console.log(val)
         if (key === undefined) {//do this only if the key doesnt already exist in the obj
           obj[key] = val; //assign a new key-value to the target object
         } else if (obj[key] === undefined) {
@@ -424,18 +424,19 @@ _.uniq = function(array, isSorted, iterator) {
 
 // GOAL: find out if we've done the work already and re-use that answer instead of invoking the function.
   _.memoize = function(func) {
-    if (func(arguments) !== null) {
-      //retrieve the results from memory and do NOT invoke the callback function
-      return func(arguments);
-    }
-    if (!func(arguments)) {
-      return func(arguments)
-    }
-    // _.each(arguments, _.once(value) {
-    //   func(value)
-    // })
-    //return function() {return _.once(func)}
 
+    var memo = memo || {}; //if master object does not already exist, create it
+
+    return function () { //needs to return a function
+      var args = JSON.stringify(arguments); //turns the argument-object into a a unique key whose value is a string
+      if (memo[args]) { //if it already exists, return it
+          return memo[args]
+          //retrieve the results from memory and do NOT invoke the callback function
+      } else {
+        return memo[args] = [func.apply(this, arguments)][0];//invoke the original function w all the arguments, so need to use .apply, and add it onto the master object
+      }
+    //return memo[args] ? memo[args] : memo[args] = [func.apply(null, arguments)][0];
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
@@ -445,9 +446,19 @@ _.uniq = function(array, isSorted, iterator) {
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
 
-  //set timeout function
+  //set timeout function...?
+  //var func = function(num) {return num+1}
   _.delay = function(func, wait) {
-    return setTimeout(func, wait);
+
+    // var args = [];
+    // _.each(arguments, function(value){
+    //   args.push(value);
+    // });
+    // return setTimeout( function() { func(args) },  wait, args)
+    var args=Array.prototype.slice.call(arguments, 2); //make the arguments-object into a real array, only first 2 elements
+    return setTimeout(function() {
+      func.apply(null, args); //.apply lets the function be called w an array as its arguments
+    }, wait);
   };
 
 
@@ -470,18 +481,23 @@ _.uniq = function(array, isSorted, iterator) {
   //create an array of random numbers to be the indexes, randomNewIndex
   //loop thru collection and assign each element a new random index# from randomNewIndex, storing this in a new array that will be returned
   _.shuffle = function(array) {
+    var arrayClone=Array.prototype.slice.call(arguments)
     var randomNewIndex = [];
-    for (var i = 0; i < array.length; i++) {
-      randomNewIndex.push( Math.floor(Math.random()*i) +1) //doesnt work, bc this doesnt guarentee no repeats
-    }
     var shuffled =[];
-    for (var i = 0; i < array.length; i++) {
+    for (var i = 0; i <array.length; i++) {
+      randomNewIndex.push( Math.floor(Math.random() * i) ) //doesnt work, bc this doesnt guarentee no repeats
+      shuffled[j] = array[k]
+    }
+
+    for (var k = 0; k < array.length; k++) {
       for (var j = 0; j < randomNewIndex.length; j++) {
-      shuffled[j] = array[i]
         
       };
     };
+    console.log(shuffled)
     return shuffled;
+
+   
   };
 
 
