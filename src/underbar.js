@@ -422,10 +422,11 @@ _.uniq = function(array, isSorted, iterator) {
 // if the callback function has been previous called with the arguments that it is being currently passed, retrieve the results from memory and do NOT invoke the callback function
 // if the current arguments have not been previously been passed into the callback function, invoke the function with these arguments
 
-// GOAL: find out if we've done the work already and re-use that answer instead of invoking the function.
+// GOAL: find out if we've done the work already and re-use that answer instead of invoking the function. 
+//will run _.once for evry new argument
   _.memoize = function(func) {
 
-    var memo = memo || {}; //if master object does not already exist, create it
+    var memo =  {}; //if master object does not already exist, create it
 
     return function () { //needs to return a function
       var args = JSON.stringify(arguments); //turns the argument-object into a a unique key whose value is a string
@@ -433,7 +434,7 @@ _.uniq = function(array, isSorted, iterator) {
           return memo[args]
           //retrieve the results from memory and do NOT invoke the callback function
       } else {
-        return memo[args] = [func.apply(this, arguments)][0];//invoke the original function w all the arguments, so need to use .apply, and add it onto the master object
+        return memo[args] = func.apply(this, arguments);//invoke the original function w all the arguments, so need to use .apply, and add it onto the master object
       }
     //return memo[args] ? memo[args] : memo[args] = [func.apply(null, arguments)][0];
     }
@@ -455,7 +456,7 @@ _.uniq = function(array, isSorted, iterator) {
     //   args.push(value);
     // });
     // return setTimeout( function() { func(args) },  wait, args)
-    var args=Array.prototype.slice.call(arguments, 2); //make the arguments-object into a real array, only first 2 elements
+    var args=Array.prototype.slice.call(arguments, 2); //make the arguments-object into a real array, only first 2 elements; arguments is passed into call, and 2 is for slice
     return setTimeout(function() {
       func.apply(null, args); //.apply lets the function be called w an array as its arguments
     }, wait);
@@ -481,21 +482,22 @@ _.uniq = function(array, isSorted, iterator) {
   //create an array of random numbers to be the indexes, randomNewIndex
   //loop thru collection and assign each element a new random index# from randomNewIndex, storing this in a new array that will be returned
   _.shuffle = function(array) {
-    var arrayClone=Array.prototype.slice.call(arguments)
-    var randomNewIndex = [];
-    var shuffled =[];
-    for (var i = 0; i <array.length; i++) {
-      randomNewIndex.push( Math.floor(Math.random() * i) ) //doesnt work, bc this doesnt guarentee no repeats
-      shuffled[j] = array[k]
-    }
+    // var shuffled =[];
+    // for (var i = 0; i <array.length; i++) {
+    //   randomNewIndex.push( Math.floor(Math.random() * i) ) //doesnt work, bc this doesnt guarentee no repeats
+    //   shuffled[j] = array[k]
+    // }
+    var arrayClone = array.slice(0, array.length)
+    //var temporary;
+    //var randomNewIndex = [];
+    _.each(array, function(val, index) {
+      var randomNewIndex = Math.floor(Math.random() * array.length)
 
-    for (var k = 0; k < array.length; k++) {
-      for (var j = 0; j < randomNewIndex.length; j++) {
-        
-      };
-    };
-    console.log(shuffled)
-    return shuffled;
+      var temporary = arrayClone[randomNewIndex]; //separate the new random value
+      arrayClone[randomNewIndex] = val//reassign the clone at that new index the current original value
+      arrayClone[index] = temporary//assign clone array at original index w new randomly generated values
+    });
+    return arrayClone
 
    
   };
